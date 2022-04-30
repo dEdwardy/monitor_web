@@ -1,5 +1,19 @@
-import { createPinia } from 'pinia'
+import { defineStore } from 'pinia'
 
-const store = createPinia()
-
-export default store
+export const useAppStore = defineStore('app', {
+    state: () => {
+        return {
+            uninfo: { add: 1 },
+            menu: [],
+            permission: {},
+        }
+    },
+    actions: {
+        login() {
+            this.uinfo = {
+                name: 'admin',
+            }
+        },
+    },
+    persist: true,
+})

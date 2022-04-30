@@ -1,6 +1,10 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import * as path from 'path'
+import AutoImport from 'unplugin-auto-import/vite'
+import Components from 'unplugin-vue-components/vite'
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+
 import styleImport from 'vite-plugin-style-import'
 
 // https://vitejs.dev/config/
@@ -12,10 +16,10 @@ export default defineConfig({
         },
     },
     server: {
-        port: 8082, //启动端口
+        port: 8111, //启动端口
         hmr: {
-            host: '127.0.0.1',
-            port: 8082,
+            host: 'localhost',
+            port: 8111,
         },
         // 设置 https 代理
         // proxy: {
@@ -28,6 +32,12 @@ export default defineConfig({
     },
     plugins: [
         vue(),
+        AutoImport({
+            resolvers: [ElementPlusResolver()],
+        }),
+        Components({
+            resolvers: [ElementPlusResolver()],
+        }),
         styleImport({
             libs: [
                 {
