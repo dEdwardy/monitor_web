@@ -1,54 +1,65 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import * as path from 'path'
+import path, { resolve } from 'path'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+import { createSvg } from './src/icons/index'
 
 import styleImport from 'vite-plugin-style-import'
 
 // https://vitejs.dev/config/
-export default defineConfig({
-    resolve: {
-        //设置别名
-        alias: {
-            '@': path.resolve(__dirname, 'src'),
+export default defineConfig(({ mode }) => {
+    const __DEV__ = mode === 'development'
+    const alias: Record<string, string> = {
+        '@/': `${resolve(__dirname, 'src')}/`,
+    }
+
+    if (__DEV__) {
+        // 解决警告You are running the esm-bundler build of vue-i18n.
+        alias['vue-i18n'] = 'vue-i18n/dist/vue-i18n.cjs.js'
+    }
+    return {
+        resolve: {
+            //设置别名
+            alias,
         },
-    },
-    server: {
-        port: 8111, //启动端口
-        hmr: {
-            host: 'localhost',
-            port: 8111,
+        server: {
+            port: 8111, //启动端口
+            hmr: {
+                host: 'localhost',
+                port: 8111,
+            },
+            // 设置 https 代理
+            // proxy: {
+            //   "/api": {
+            //     target: "your https address",
+            //     changeOrigin: true,
+            //     rewrite: (path: string) => path.replace(/^\/api/, ""),
+            //   },
+            // },
         },
-        // 设置 https 代理
-        // proxy: {
-        //   "/api": {
-        //     target: "your https address",
-        //     changeOrigin: true,
-        //     rewrite: (path: string) => path.replace(/^\/api/, ""),
-        //   },
-        // },
-    },
-    plugins: [
-        vue(),
-        AutoImport({
-            resolvers: [ElementPlusResolver()],
-        }),
-        Components({
-            resolvers: [ElementPlusResolver()],
-        }),
-        styleImport({
-            libs: [
-                {
-                    libraryName: 'element-plus',
-                    esModule: true,
-                    resolveStyle: (name) => {
-                        return `element-plus/lib/theme-chalk/${name}.css`
+        plugins: [
+            vue(),
+            AutoImport({
+                resolvers: [ElementPlusResolver()],
+            }),
+            Components({
+                resolvers: [ElementPlusResolver()],
+            }),
+            styleImport({
+                libs: [
+                    {
+                        libraryName: 'element-plus',
+                        esModule: true,
+                        resolveStyle: (name) => {
+                            return `element-plus/lib/theme-chalk/${name}.css`
+                        },
+                        ensureStyleFile: true, // 忽略文件是否存在, 导入不存在的CSS文件时防止错误。
                     },
-                    ensureStyleFile: true, // 忽略文件是否存在, 导入不存在的CSS文件时防止错误。
-                },
-            ],
-        }),
-    ],
+                ],
+            }),
+            createSvg('./src/icons/svg/'),
+        ],
+    }
 })

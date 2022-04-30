@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import ELayout from '@/components/ELayout.vue'
+import MLayout from '@/components/MLayout.vue'
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -13,7 +13,7 @@ const routes: Array<RouteRecordRaw> = [
     },
     {
         path: '/',
-        component: ELayout,
+        component: MLayout,
         redirect: 'index',
         children: [
             {
@@ -24,6 +24,33 @@ const routes: Array<RouteRecordRaw> = [
                     requireAuth: true,
                 },
                 component: () => import('@/views/HomeView.vue'),
+            },
+            {
+                path: 'user-manage',
+                name: 'user-manage',
+                meta: {
+                    title: '用户管理',
+                    requireAuth: true,
+                },
+                component: () => import('@/views/UserManage.vue'),
+            },
+            {
+                path: 'project-manage',
+                name: 'project-manage',
+                meta: {
+                    title: '项目管理',
+                    requireAuth: true,
+                },
+                component: () => import('@/views/ProjectManage.vue'),
+            },
+            {
+                path: 'error-monitor',
+                name: 'error-monitor',
+                meta: {
+                    title: '异常监控',
+                    requireAuth: true,
+                },
+                component: () => import('@/views/ErrorMonitor.vue'),
             },
         ],
     },
