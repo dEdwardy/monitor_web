@@ -127,9 +127,10 @@ const showDetail = (id: string) => {
     })
 }
 const handleUpload = (res: any) => {
+    console.error('appId', form.id)
     const formData = new FormData()
     formData.append('file', res.file)
-    return uploadSourceMap(formData)
+    return uploadSourceMap(formData, form.id)
 }
 const handleRemove = (id: string) => {
     console.error('id', id)

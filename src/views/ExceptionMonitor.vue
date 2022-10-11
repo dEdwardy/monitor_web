@@ -21,7 +21,7 @@ interface ISearchForm {
     createdDate?: string
 }
 const router = useRouter()
-const isList = ref<boolean>(false)
+const isList = ref<boolean>(true)
 // const handleChangeView = (value:showrType) => {
 //     console.error(value)
 //     current.value =
@@ -181,15 +181,25 @@ const option = reactive({
         </div>
         <div v-show="isList" class="table">
             <el-table v-loading="loading" :data="tableData" height="500px">
+                <el-table-column type="index" label="序号" width="100px">
+                </el-table-column>
                 <el-table-column
-                    type="index"
-                    label="序号"
-                    width="100px"
-                ></el-table-column>
-                <el-table-column prop="name" label="错误名称" />
-                <el-table-column prop="message" label="错误信息" />
-                <el-table-column prop="source" label="Source" />
-                <el-table-column prop="created" label="创建日期">
+                    prop="type"
+                    label="异常类型"
+                    width="100"
+                    show-overflow-tooltip
+                />
+                <el-table-column
+                    prop="url"
+                    label="异常URL"
+                    show-overflow-tooltip
+                >
+                    <template #default="scope">
+                        <span> {{ scope?.row?.stack?.url }} </span>
+                    </template>
+                </el-table-column>
+                <!-- <el-table-column prop="source" label="Source" /> -->
+                <el-table-column prop="created" width="180" label="创建日期">
                     <template #default="{ row }">
                         <span>
                             {{
@@ -203,9 +213,17 @@ const option = reactive({
                         </span>
                     </template>
                 </el-table-column>
-                <el-table-column prop="lineno" label="行" />
-                <el-table-column prop="colno" label="列" />
-                <el-table-column prop="operation" label="操作">
+                <el-table-column
+                    prop="stack"
+                    label="异常堆栈"
+                    show-overflow-tooltip
+                />
+                <el-table-column
+                    prop="name"
+                    label="name"
+                    show-overflow-tooltip
+                />
+                <el-table-column prop="operation" label="操作" width="100">
                     <template #default="{ row }">
                         <div>
                             <el-button type="text" @click="getDetail(row)">
@@ -276,6 +294,7 @@ const option = reactive({
         display: flex;
         align-items: center;
         transition: all 0.3s ease-in-out;
+
         .chart {
             height: 400px;
         }

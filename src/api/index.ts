@@ -24,8 +24,8 @@ export const getAllProject = (params) => {
 export const getProjectById = (id) => {
     return service.get(`/project/${id}`)
 }
-export const uploadSourceMap = (data) => {
-    return service.post('/sourcemap', data)
+export const uploadSourceMap = (data, appId) => {
+    return service.post('/sourcemap', data, { headers: { appId } })
 }
 export const getErrors = () => {
     return service.get('/error')
