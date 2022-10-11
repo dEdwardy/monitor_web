@@ -4,6 +4,7 @@ import type { FormInstance, FormRules } from 'element-plus'
 import { useI18n } from 'vue-i18n'
 import { getErrors, getErrorById } from '@/api'
 import { format, parseISO } from 'date-fns'
+import { useRouter } from 'vue-router'
 interface IError {
     _id?: string | number
     name?: string
@@ -19,6 +20,7 @@ interface ISearchForm {
     principal?: string
     createdDate?: string
 }
+const router = useRouter()
 const isList = ref<boolean>(false)
 // const handleChangeView = (value:showrType) => {
 //     console.error(value)
@@ -71,8 +73,14 @@ const getData = () => {
         loading.value = false
     })
 }
-const getDetail = (id: any) => {
-    console.error(id)
+const getDetail = (row: any) => {
+    console.error(row)
+    router.push({
+        name: 'exceptionDetail',
+        params: {
+            id: row._id,
+        },
+    })
 }
 const handleSearch = () => getData()
 handleSearch()
@@ -131,7 +139,7 @@ const option = reactive({
 </script>
 <template>
     <div class="error-monitor">
-        <div>
+        <!-- <div>
             <el-switch
                 v-model="isList"
                 class="mb-2"
@@ -140,7 +148,7 @@ const option = reactive({
                 active-text="列表"
                 inactive-text="图表"
             />
-        </div>
+        </div> -->
         <div class="search-panel">
             <div style="margin-right: 40px">
                 <el-switch
@@ -181,13 +189,13 @@ const option = reactive({
                 <el-table-column prop="name" label="错误名称" />
                 <el-table-column prop="message" label="错误信息" />
                 <el-table-column prop="source" label="Source" />
-                <el-table-column prop="createdDate" label="创建日期">
+                <el-table-column prop="created" label="创建日期">
                     <template #default="{ row }">
                         <span>
                             {{
-                                row.createdDate
+                                row.created
                                     ? format(
-                                          parseISO(row.createdDate),
+                                          parseISO(row.created),
                                           'yyyy-MM-dd hh:mm:ss',
                                       )
                                     : ''
@@ -200,7 +208,7 @@ const option = reactive({
                 <el-table-column prop="operation" label="操作">
                     <template #default="{ row }">
                         <div>
-                            <el-button type="text" @click="getDetail(row._id)">
+                            <el-button type="text" @click="getDetail(row)">
                                 detail
                             </el-button>
                         </div>

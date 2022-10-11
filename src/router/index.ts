@@ -54,6 +54,15 @@ const routes: Array<RouteRecordRaw> = [
                 },
                 component: () => import('@/views/ExceptionMonitor.vue'),
             },
+            {
+                path: 'exception/:id',
+                name: 'exceptionDetail',
+                meta: {
+                    title: '异常监控',
+                    requireAuth: true,
+                },
+                component: () => import('@/views/ExceptionDetail.vue'),
+            },
         ],
     },
 ]

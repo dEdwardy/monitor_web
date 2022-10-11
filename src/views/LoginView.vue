@@ -38,7 +38,7 @@ const handleLogin = () => {
         .validate()
         .then(() => {
             return store.login(form).then(() => {
-                router.push({ name: 'error-monitor' })
+                router.push({ name: 'exception-monitor' })
                 loading.value = false
             })
         })

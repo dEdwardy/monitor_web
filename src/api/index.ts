@@ -31,5 +31,5 @@ export const getErrors = () => {
     return service.get('/error')
 }
 export const getErrorById = (id) => {
-    return service.get(`/parse/${id}`)
+    return service.get(`/error/parse/${id}`)
 }

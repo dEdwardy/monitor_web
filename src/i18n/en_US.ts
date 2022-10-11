@@ -11,9 +11,9 @@ export default {
         en_US: 'English',
     },
     menu: {
-        user_manage: 'User Manage',
-        project_manage: 'Project mMnage',
-        exception_monitor: 'Exception Monitor',
+        user_manage: 'User',
+        project_manage: 'Project',
+        exception_monitor: 'Exception',
     },
     form: {
         input: 'please input {field}',

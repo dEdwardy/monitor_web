@@ -2,7 +2,7 @@ import axios from 'axios'
 import { ElMessage } from 'element-plus'
 import { useAppStore } from '@/store'
 const service = axios.create({
-    baseURL: '/api',
+    baseURL: 'http://localhost:4003/api',
     timeout: 10000,
 })
 
