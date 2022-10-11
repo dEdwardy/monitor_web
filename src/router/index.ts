@@ -1,10 +1,12 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import MLayout from '@/components/MLayout.vue'
+import { useAppStore } from '@/store'
+import { ElMessage } from 'element-plus'
 
 const routes: Array<RouteRecordRaw> = [
     {
         path: '/login',
-        name: 'Login',
+        name: 'login',
         meta: {
             title: '登录',
             requireAuth: false,
@@ -44,13 +46,13 @@ const routes: Array<RouteRecordRaw> = [
                 component: () => import('@/views/ProjectManage.vue'),
             },
             {
-                path: 'error-monitor',
-                name: 'error-monitor',
+                path: 'exception-monitor',
+                name: 'exception-monitor',
                 meta: {
                     title: '异常监控',
                     requireAuth: true,
                 },
-                component: () => import('@/views/ErrorMonitor.vue'),
+                component: () => import('@/views/ExceptionMonitor.vue'),
             },
         ],
     },
@@ -59,5 +61,25 @@ const routes: Array<RouteRecordRaw> = [
 const router = createRouter({
     history: createWebHistory(),
     routes,
+})
+router.beforeEach((to, from, next) => {
+    if (to.path === '/login') {
+        next()
+    } else {
+        const { uinfo } = useAppStore()
+        console.error('uinfo', uinfo)
+        // 如果没登录,都导向登录页
+        if (!uinfo) {
+            if (to.path !== '/login') {
+                ElMessage.warning('请登录后再操作')
+                next({ path: '/login' })
+                // next()
+            } else {
+                next()
+            }
+        } else {
+            next()
+        }
+    }
 })
 export default router

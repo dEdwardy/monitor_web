@@ -1,79 +1,175 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
-interface IUser {
+import type { FormInstance, FormRules } from 'element-plus'
+import { getUsers, addUser } from '@/api'
+import { ElMessage } from 'element-plus'
+export interface IUser {
     id?: string | number
-    name?: string
+    username?: string
     email?: string
-    created?: string
+    createdDate?: string
     [propName: string]: any
 }
 interface ISearchForm {
-    name?: string
-    created?: string
+    username?: string
+    createdDate?: string
 }
 const loading = ref<boolean>(false)
 const searchForm = reactive<ISearchForm>({
-    name: '',
-    created: '',
+    username: '',
+    createdDate: '',
 })
-const tableData = ref<IUser[]>([])
-loading.value = true
-setTimeout(() => {
-    tableData.value = new Array(10).fill(1).map((i, idx) => ({
-        id: idx,
-        name: 'name' + idx,
-        email: i + 'sdfa@qq.com',
-    }))
+const formRef = ref<FormInstance>()
+const form = reactive<IUser>({
+    username: '',
+    password: '',
+    email: '',
+})
+const rules = reactive<FormRules>({
+    username: [
+        { required: true, message: '请输入用户名', trigger: 'blur' },
+        {
+            min: 6,
+            max: 15,
+            message: '用户名长度在 6 到 15 个字符',
+            trigger: 'blur',
+        },
+    ],
+    password: [
+        { required: true, message: '请输入密码', trigger: 'blur' },
+        {
+            min: 6,
+            max: 15,
+            message: '密码长度在 6 到 15 个字符',
+            trigger: 'blur',
+        },
+    ],
+    email: [
+        { required: true, message: '请输入邮箱', trigger: 'blur' },
+        { type: 'email', message: '请输入正确的邮箱', trigger: 'blur' },
+    ],
+})
+const dialogVisible = ref<boolean>(false)
 
-    loading.value = false
-}, 1000)
+const resetForm = () => {
+    formRef.value && formRef.value.resetFields()
+}
+const handleSure = () => {
+    formRef.value?.validate((valid) => {
+        if (valid) {
+            return addUser(form).then(() => {
+                ElMessage.success('操作成功')
+                dialogVisible.value = false
+                handleSearch()
+            })
+        }
+    })
+}
+const handleCancel = () => {
+    dialogVisible.value = false
+}
+const handleAdd = () => {
+    resetForm()
+    dialogVisible.value = true
+}
+const handleSearch = () => {
+    loading.value = true
+    return getUsers()
+        .then(({ data }) => {
+            tableData.value = data
+        })
+        .finally(() => {
+            loading.value = false
+        })
+}
+const tableData = ref<IUser[]>([])
+handleSearch()
 </script>
 <template>
-    <div class="search-panel">
-        <el-form inline>
-            <el-form-item label="创建时间">
-                <el-date-picker
-                    v-model="searchForm.created"
-                    type="date"
-                    placeholder="请选择创建时间"
-                />
-            </el-form-item>
-            <el-form-item label="姓名">
-                <el-input v-model="searchForm.name"></el-input>
-            </el-form-item>
+    <div class="user-manage">
+        <div class="search-panel">
+            <el-form inline>
+                <el-form-item label="创建时间">
+                    <el-date-picker
+                        v-model="searchForm.createdDate"
+                        type="date"
+                        placeholder="请选择创建时间"
+                    />
+                </el-form-item>
+                <el-form-item label="姓名">
+                    <el-input v-model="searchForm.username"></el-input>
+                </el-form-item>
 
-            <el-form-item>
-                <el-button type="primary">搜索</el-button>
-            </el-form-item>
-        </el-form>
-    </div>
-    <div class="table">
-        <el-table :data="tableData" height="500px">
-            <el-table-column
-                type="index"
-                label="序号"
-                width="100px"
-            ></el-table-column>
-            <el-table-column prop="name" label="姓名"></el-table-column>
-            <el-table-column prop="email" label="邮箱"></el-table-column>
-            <el-table-column prop="created" label="创建日期"></el-table-column>
-        </el-table>
+                <el-form-item>
+                    <el-button type="primary" @click="handleSearch"
+                        >搜索</el-button
+                    >
+                    <el-button type="primary" @click="handleAdd">add</el-button>
+                </el-form-item>
+            </el-form>
+        </div>
+        <div class="table">
+            <el-table v-loading="loading" :data="tableData" height="500px">
+                <el-table-column
+                    type="index"
+                    label="序号"
+                    width="100px"
+                ></el-table-column>
+                <el-table-column prop="username" label="姓名"></el-table-column>
+                <el-table-column prop="email" label="邮箱"></el-table-column>
+                <el-table-column
+                    prop="createdDate"
+                    label="创建日期"
+                ></el-table-column>
+            </el-table>
+        </div>
+        <el-dialog v-model="dialogVisible" width="500px">
+            <el-form
+                ref="formRef"
+                :model="form"
+                :rules="rules"
+                label-width="100px"
+            >
+                <el-form-item label="用户名" prop="username">
+                    <el-input v-model="form.username"></el-input>
+                </el-form-item>
+                <el-form-item label="密码" prop="password">
+                    <el-input
+                        v-model="form.password"
+                        type="password"
+                    ></el-input>
+                </el-form-item>
+                <el-form-item label="邮箱" prop="email">
+                    <el-input v-model="form.email"></el-input>
+                </el-form-item>
+            </el-form>
+            <template #footer>
+                <div>
+                    <el-button @click="handleCancel">取消</el-button>
+                    <el-button type="primary" @click="handleSure"
+                        >确定</el-button
+                    >
+                </div>
+            </template>
+        </el-dialog>
     </div>
 </template>
 
 <style lang="scss" scoped>
-:deep(.el-form-item) {
-    margin-bottom: 0 !important;
-}
+.user-manage {
+    :deep(.el-input__wrapper) {
+        width: 100%;
+    }
 
-:deep(.el-input__wrapper) {
-    width: 100%;
-}
+    .search-panel {
+        margin: 20px 0;
 
-.search-panel {
-    margin: 20px 0;
-}
+        :deep(.el-form-item) {
+            margin-bottom: 0 !important;
+        }
+    }
 
-.table {
+    .table {
+    }
 }
 </style>

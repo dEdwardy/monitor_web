@@ -18,14 +18,19 @@
     ]
   },
   "dependencies": {
+    "@types/date-fns": "^2.6.0",
     "@vueuse/core": "^8.3.1",
     "axios": "^0.27.2",
+    "date-fns": "^2.28.0",
+    "echarts": "^5.3.2",
     "element-plus": "^2.1.11",
+    "lodash-es": "^4.17.21",
     "normalize.css": "^8.0.1",
     "pinia": "^2.0.13",
     "pinia-persistedstate-plugin": "^0.1.0",
     "pinia-plugin-persistedstate": "^1.5.1",
     "vue": "^3.2.25",
+    "vue-echarts": "^6.0.2",
     "vue-i18n": "^9.1.9",
     "vue-router": "^4.0.14"
   },

@@ -1,8 +1,13 @@
 <script setup lang="ts">
+import { useAppStore } from '@/store'
+import { storeToRefs } from 'pinia'
 import { watchEffect, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
-const route = useRoute()
+
+const { uinfo } = storeToRefs(useAppStore())
+const username = (uinfo.value as any)?.username
+const routeInfo = useRoute()
 const router = useRouter()
 const { t, locale } = useI18n()
 const active = ref<string>('')
@@ -15,8 +20,12 @@ const handleChangeLang = () => {
     localStorage.setItem('locale', lang)
     locale.value = lang
 }
+const handleLogout = () => {
+    localStorage.clear()
+    router.push({ name: 'login' })
+}
 watchEffect(() => {
-    active.value = route.path.slice(1)
+    active.value = routeInfo.path.slice(1)
 })
 </script>
 <template>
@@ -28,9 +37,8 @@ watchEffect(() => {
                     <div class="lang">
                         <el-popover
                             placement="bottom"
-                            :width="200"
+                            :width="80"
                             trigger="hover"
-                            content="this is content, this is content, this is content"
                         >
                             <el-button type="text" @click="handleChangeLang">
                                 {{ locale === 'zh_CN' ? 'English' : '中文' }}
@@ -42,7 +50,14 @@ watchEffect(() => {
                             </template>
                         </el-popover>
                     </div>
-                    <div>Admin</div>
+                    <el-popover placement="bottom" :width="80" trigger="hover">
+                        <el-button type="text" @click="handleLogout">
+                            {{ t('common.logout') }}
+                        </el-button>
+                        <template #reference>
+                            <div>{{ username }}</div>
+                        </template>
+                    </el-popover>
                 </div>
             </el-header>
             <el-container>
@@ -59,24 +74,28 @@ watchEffect(() => {
                             <el-icon>
                                 <SvgIcon icon-class="user-manage" />
                             </el-icon>
-                            <span>用户管理</span>
+                            <span>{{ t('menu.user_manage') }}</span>
                         </el-menu-item>
                         <el-menu-item index="project-manage">
                             <el-icon>
                                 <SvgIcon icon-class="project-manage" />
                             </el-icon>
-                            <span>项目管理</span>
+                            <span>{{ t('menu.project_manage') }}</span>
                         </el-menu-item>
-                        <el-menu-item index="error-monitor">
+                        <el-menu-item index="exception-monitor">
                             <el-icon>
-                                <SvgIcon icon-class="error-monitor" />
+                                <SvgIcon icon-class="exception-monitor" />
                             </el-icon>
-                            <span>异常监控</span>
+                            <span>{{ t('menu.exception_monitor') }}</span>
                         </el-menu-item>
                     </el-menu>
                 </el-aside>
                 <el-main class="main">
-                    <router-view></router-view>
+                    <router-view v-slot="{ Component }">
+                        <transition name="fade" mode="out-in">
+                            <component :is="Component" />
+                        </transition>
+                    </router-view>
                 </el-main>
             </el-container>
         </el-container>
@@ -92,10 +111,12 @@ watchEffect(() => {
         line-height: 60px;
         display: flex;
         justify-content: space-between;
+
         .app_name {
             font-size: 16px;
             font-style: italic;
         }
+
         .info {
             display: flex;
             align-items: center;

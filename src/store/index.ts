@@ -1,11 +1,13 @@
 import { defineStore } from 'pinia'
+import { auth } from '@/api'
+import { ElMessage } from 'element-plus'
 
 export const useAppStore = defineStore('app', {
     state: () => {
         return {
-            uninfo: { add: 1 },
-            menu: [],
-            permission: {},
+            uinfo: null,
+            // menu: [],
+            // permission: {},
             locale: 'zh_CN',
         }
     },
@@ -13,10 +15,11 @@ export const useAppStore = defineStore('app', {
         setLocale(locale) {
             this.locale = locale
         },
-        login() {
-            this.uinfo = {
-                name: 'admin',
-            }
+        login(user) {
+            return auth(user).then(({ data }) => {
+                this.uinfo = data
+                ElMessage.success('登录成功')
+            })
         },
     },
     persist: true,

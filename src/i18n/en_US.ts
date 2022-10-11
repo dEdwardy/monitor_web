@@ -10,6 +10,11 @@ export default {
         new: 'new',
         en_US: 'English',
     },
+    menu: {
+        user_manage: 'User Manage',
+        project_manage: 'Project mMnage',
+        exception_monitor: 'Exception Monitor',
+    },
     form: {
         input: 'please input {field}',
         select: 'please select {field}',

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 import zhCn from 'element-plus/lib/locale/lang/zh-CN'
-console.log(zhCn)
+import type { ElConfigProvider } from 'element-plus'
 const locale = ref({
     ...zhCn,
 })
@@ -20,7 +20,12 @@ const messageConfig = reactive({
         :button="buttonConfig"
         :message="messageConfig"
     >
-        <router-view />
+        <!-- <router-view v-slot="{ Component }">
+            <transition name="slide-left" mode="out-in">
+                <component :is="Component" />
+            </transition>
+        </router-view> -->
+        <router-view></router-view>
     </el-config-provider>
 </template>
 
