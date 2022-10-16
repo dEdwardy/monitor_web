@@ -1,7 +1,7 @@
 import { ref, reactive, watch, toRefs, computed } from 'vue'
 export interface IPageOptions {
-    current?: number
-    size?: number
+    current: number
+    size: number
     [propName: string]: any
 }
 export interface ISearchOptions {
@@ -71,6 +71,7 @@ export function useTable(
             () => pageOptions.size,
             () => {
                 pageOptions.current = 1
+                search()
             },
         )
         watch(
@@ -92,10 +93,7 @@ export function useTable(
         if (config.backendPagination) {
             return []
         } else {
-            return list.value.slice(
-                (pageOptions.current - 1) * pageOptions.size,
-                pageOptions.current * pageOptions.size,
-            )
+            return list.value.slice((pageOptions.current - 1) * pageOptions.size, pageOptions.current * pageOptions.size)
         }
     })
     if (config.backendPagination) {

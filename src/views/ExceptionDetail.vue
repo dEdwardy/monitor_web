@@ -20,7 +20,13 @@ const res = reactive({
 })
 const getExceptionDetailById = () => {
     return getErrorById(params.id).then(({ data }) => {
-        res.detail = data
+        res.detail = {
+            ...data,
+            detail: data.detail
+                .split('\n')
+                .map((i: string, idx: number) => `${idx + 1}. ${i}`)
+                .join('\n'),
+        }
     })
 }
 
@@ -43,14 +49,8 @@ getExceptionDetailById()
             </el-form-item>
             <el-form-item label="Detail" class="detail">
                 <div v-if="res.detail.po?.line">
-                    Line {{ res.detail.po.line }} - Column{{
-                        res.detail.po.column
-                    }}
-                    <highlightjs
-                        language="JavaScript"
-                        :autodetect="false"
-                        :code="res.detail.detail"
-                    ></highlightjs>
+                    Line {{ res.detail.po.line }} - Column{{ res.detail.po.column }}
+                    <highlightjs language="JavaScript" :autodetect="false" :code="res.detail.detail"></highlightjs>
                 </div>
 
                 <span v-if="res.detail?.remote"> {{ res.detail?.remote }}</span>

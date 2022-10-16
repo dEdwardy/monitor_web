@@ -56,49 +56,24 @@ handleSearch()
         <div class="search-panel">
             <el-form inline>
                 <el-form-item label="创建时间">
-                    <el-date-picker
-                        v-model="searchForm.createdDate"
-                        type="date"
-                        placeholder="请选择创建时间"
-                    />
+                    <el-date-picker v-model="searchForm.createdDate" type="date" placeholder="请选择创建时间" />
                 </el-form-item>
                 <el-form-item label="项目">
                     <el-input v-model="searchForm.name"></el-input>
                 </el-form-item>
 
                 <el-form-item>
-                    <el-button type="primary" @click="handleSearch">{{
-                        t('common.search')
-                    }}</el-button>
+                    <el-button type="primary" @click="handleSearch">{{ t('common.search') }}</el-button>
                 </el-form-item>
             </el-form>
         </div>
         <div class="table">
             <el-table v-loading="loading" :data="list">
                 <el-table-column type="index" label="序号" width="100px" />
-                <el-table-column
-                    prop="type"
-                    label="Type"
-                    width="100"
-                    sortable
-                    show-overflow-tooltip
-                />
-                <el-table-column
-                    prop="name"
-                    label="name"
-                    width="150"
-                    show-overflow-tooltip
-                />
-                <el-table-column
-                    prop="filename"
-                    label="filename"
-                    show-overflow-tooltip
-                />
-                <el-table-column
-                    prop="message"
-                    label="message"
-                    show-overflow-tooltip
-                />
+                <el-table-column prop="type" label="Type" width="100" sortable show-overflow-tooltip />
+                <el-table-column prop="name" label="name" width="150" show-overflow-tooltip />
+                <el-table-column prop="filename" label="filename" show-overflow-tooltip />
+                <el-table-column prop="message" label="message" show-overflow-tooltip />
                 <!-- <el-table-column
                     prop="lineno"
                     label="lineno"
@@ -124,31 +99,17 @@ handleSearch()
                 </el-table-column> -->
                 <el-table-column prop="ip" label="ip" show-overflow-tooltip />
                 <el-table-column prop="ua" label="ua" show-overflow-tooltip />
-                <el-table-column
-                    prop="created"
-                    width="180"
-                    label="创建日期"
-                    sortable
-                >
+                <el-table-column prop="created" width="180" label="创建日期" sortable>
                     <template #default="{ row }">
                         <span>
-                            {{
-                                row.created
-                                    ? format(
-                                          parseISO(row.created),
-                                          'yyyy-MM-dd hh:mm:ss',
-                                      )
-                                    : ''
-                            }}
+                            {{ row.created ? format(parseISO(row.created), 'yyyy-MM-dd hh:mm:ss') : '' }}
                         </span>
                     </template>
                 </el-table-column>
                 <el-table-column prop="operation" label="操作" width="100">
                     <template #default="{ row }">
                         <div>
-                            <el-button type="text" @click="getDetail(row)">
-                                detail
-                            </el-button>
+                            <el-button type="text" @click="getDetail(row)"> detail </el-button>
                         </div>
                     </template>
                 </el-table-column>

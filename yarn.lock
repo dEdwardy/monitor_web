@@ -796,7 +796,7 @@ echarts@^5.3.2:
     tslib "2.3.0"
     zrender "5.4.0"
 
-element-plus@^2.1.11:
+element-plus@^2.2.18:
   version "2.2.18"
   resolved "https://registry.npmmirror.com/element-plus/-/element-plus-2.2.18.tgz#62b388e05587506d2d40bede0729046f7c41f9d9"
   integrity sha512-2pK2zmVOwP14eFl3rGoR+3BWJwDyO+DZCvzjQ8L6qjUR+hVKwFhgxIcSkKJatbcHFw5Xui6UyN20jV+gQP7mLg==

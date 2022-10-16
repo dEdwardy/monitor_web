@@ -35,11 +35,7 @@ watchEffect(() => {
                 <span class="app_name"> Fe_Monitor</span>
                 <div class="info">
                     <div class="lang">
-                        <el-popover
-                            placement="bottom"
-                            :width="80"
-                            trigger="hover"
-                        >
+                        <el-popover placement="bottom" :width="80" trigger="hover">
                             <el-button type="text" @click="handleChangeLang">
                                 {{ locale === 'zh_CN' ? 'English' : '中文' }}
                             </el-button>
