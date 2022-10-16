@@ -1,0 +1,122 @@
+import { ref, reactive, watch, toRefs, computed } from 'vue'
+export interface IPageOptions {
+    current?: number
+    size?: number
+    [propName: string]: any
+}
+export interface ISearchOptions {
+    current?: number
+    size?: number
+    [propName: string]: any
+}
+export interface IList {
+    list: any[]
+    total: number
+}
+// export interface IGetList {
+//   (): Promise<IList>;
+// }
+export type TGetList = () => Promise<IList>
+export interface IResponse {
+    list: any[]
+    pageOptions: IPageOptions
+    total: number
+    loading: boolean
+    searchOptions: ISearchOptions
+    search: () => Promise<any>
+    error: any
+}
+export interface IConfig {
+    backendPagination: boolean
+    size?: number
+    current?: number
+}
+export function useTable(
+    getList,
+    options: ISearchOptions = {},
+    config: IConfig = { backendPagination: true, current: 1, size: 5 },
+): IResponse {
+    const searchOptions = options ? reactive(options) : reactive({})
+    const pageOptions = reactive({
+        current: config?.current ?? 1,
+        size: config?.size ?? 5,
+        ...toRefs(searchOptions),
+    })
+    const loading = ref(false)
+    const total = ref(0)
+    const list = ref([])
+    const error = ref()
+    const search = () => {
+        loading.value = true
+        return getList(pageOptions)
+            .then((res) => {
+                list.value = res.list
+                total.value = res.total
+            })
+            .catch((e) => (error.value = e))
+            .finally(() => {
+                loading.value = false
+            })
+    }
+    search()
+    watch(error, (err) => {
+        if (err) {
+            console.error('出错辣', err)
+            loading.value = false
+        }
+    })
+    // 默认后端分页
+    if (config.backendPagination) {
+        watch(
+            () => pageOptions.size,
+            () => {
+                pageOptions.current = 1
+            },
+        )
+        watch(
+            () => pageOptions.current,
+            () => {
+                search()
+            },
+        )
+    } else {
+        watch(
+            () => pageOptions.size,
+            () => {
+                pageOptions.current = 1
+            },
+        )
+    }
+
+    const computedList = computed(() => {
+        if (config.backendPagination) {
+            return []
+        } else {
+            return list.value.slice(
+                (pageOptions.current - 1) * pageOptions.size,
+                pageOptions.current * pageOptions.size,
+            )
+        }
+    })
+    if (config.backendPagination) {
+        return {
+            list,
+            pageOptions,
+            total,
+            loading,
+            searchOptions,
+            search,
+            error,
+        }
+    } else {
+        return {
+            list: computedList,
+            pageOptions,
+            total,
+            loading,
+            searchOptions,
+            search,
+            error,
+        }
+    }
+}

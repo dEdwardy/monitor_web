@@ -1,10 +1,26 @@
 <script lang="ts" setup>
 import { useRoute } from 'vue-router'
 import { getErrorById } from '@/api'
+import { reactive } from 'vue'
 const { params } = useRoute()
+const res = reactive({
+    detail: {
+        name: undefined,
+        type: undefined,
+        message: undefined,
+        detail: undefined,
+        po: {
+            line: undefined,
+            column: undefined,
+        },
+        remote: undefined,
+        ua: undefined,
+        ip: undefined,
+    },
+})
 const getExceptionDetailById = () => {
     return getErrorById(params.id).then(({ data }) => {
-        console.error('data', data)
+        res.detail = data
     })
 }
 
@@ -12,7 +28,41 @@ getExceptionDetailById()
 </script>
 
 <template>
-    <div class="exception-detail"></div>
+    <div class="exception-detail">
+        <el-form :label-width="80" label-position="left">
+            <el-form-item label="Name"> {{ res.detail.name }} </el-form-item>
+            <el-form-item label="Type"> {{ res.detail.type }} </el-form-item>
+            <el-form-item label="Message">
+                {{ res.detail.message }}
+            </el-form-item>
+            <el-form-item label="UserAgent">
+                {{ res.detail.ua }}
+            </el-form-item>
+            <el-form-item label="IP">
+                {{ res.detail.ip }}
+            </el-form-item>
+            <el-form-item label="Detail" class="detail">
+                <div v-if="res.detail.po?.line">
+                    Line {{ res.detail.po.line }} - Column{{
+                        res.detail.po.column
+                    }}
+                    <highlightjs
+                        language="JavaScript"
+                        :autodetect="false"
+                        :code="res.detail.detail"
+                    ></highlightjs>
+                </div>
+
+                <span v-if="res.detail?.remote"> {{ res.detail?.remote }}</span>
+            </el-form-item>
+        </el-form>
+    </div>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+:deep(.detail) {
+    .el-form-item__content {
+        display: unset;
+    }
+}
+</style>
