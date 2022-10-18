@@ -2,7 +2,7 @@ import axios from 'axios'
 import { ElMessage } from 'element-plus'
 import { useAppStore } from '@/store'
 const service = axios.create({
-    baseURL: 'http://localhost:5003/api',
+    baseURL: '/nest-monitor-api',
     timeout: 10000,
 })
 
