@@ -49,8 +49,13 @@ getExceptionDetailById()
             </el-form-item>
             <el-form-item label="Detail" class="detail">
                 <div v-if="res.detail.po?.line">
-                    Line {{ res.detail.po.line }} - Column{{ res.detail.po.column }}
-                    <highlightjs language="JavaScript" :autodetect="false" :code="res.detail.detail"></highlightjs>
+                    Line {{ res.detail.po.line }} - Column
+                    {{ res.detail.po.column }}
+                    <highlightjs
+                        language="JavaScript"
+                        :autodetect="false"
+                        :code="res.detail.detail"
+                    ></highlightjs>
                 </div>
 
                 <span v-if="res.detail?.remote"> {{ res.detail?.remote }}</span>

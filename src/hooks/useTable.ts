@@ -1,4 +1,4 @@
-import { ref, reactive, watch, toRefs, computed } from 'vue'
+import { ref, reactive, watch, toRefs, computed, Ref, ComputedRef } from 'vue'
 export interface IPageOptions {
     current: number
     size: number
@@ -18,10 +18,10 @@ export interface IList {
 // }
 export type TGetList = () => Promise<IList>
 export interface IResponse {
-    list: any[]
+    list: Ref<any[]> | ComputedRef<any[]>
     pageOptions: IPageOptions
-    total: number
-    loading: boolean
+    total: Ref<number> | ComputedRef<number>
+    loading: Ref<boolean>
     searchOptions: ISearchOptions
     search: () => Promise<any>
     error: any
@@ -93,7 +93,10 @@ export function useTable(
         if (config.backendPagination) {
             return []
         } else {
-            return list.value.slice((pageOptions.current - 1) * pageOptions.size, pageOptions.current * pageOptions.size)
+            return list.value.slice(
+                (pageOptions.current - 1) * pageOptions.size,
+                pageOptions.current * pageOptions.size,
+            )
         }
     })
     if (config.backendPagination) {
