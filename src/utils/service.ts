@@ -2,7 +2,7 @@ import axios from 'axios'
 import { ElMessage } from 'element-plus'
 import { useAppStore } from '@/store'
 const service = axios.create({
-    baseURL: '/nest-monitor-api',
+    baseURL: import.meta.env.VITE_HTTP_PREFIX,
     timeout: 10000,
 })
 
@@ -25,9 +25,7 @@ service.interceptors.response.use(
         const { status } = res.data
         if (![200, 201].includes(status)) {
             ElMessage.error(res.data?.error?.message ?? '请求失败')
-            return Promise.reject(
-                new Error(res.data?.error?.message ?? '请求失败'),
-            )
+            return Promise.reject(new Error(res.data?.error?.message ?? '请求失败'))
         }
         return res.data
     },

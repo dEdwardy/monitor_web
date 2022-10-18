@@ -93,10 +93,7 @@ export function useTable(
         if (config.backendPagination) {
             return []
         } else {
-            return list.value.slice(
-                (pageOptions.current - 1) * pageOptions.size,
-                pageOptions.current * pageOptions.size,
-            )
+            return list.value.slice((pageOptions.current - 1) * pageOptions.size, pageOptions.current * pageOptions.size)
         }
     })
     if (config.backendPagination) {
