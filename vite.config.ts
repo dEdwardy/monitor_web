@@ -20,6 +20,7 @@ export default defineConfig(({ mode }) => {
         alias['vue-i18n'] = 'vue-i18n/dist/vue-i18n.cjs.js'
     }
     return {
+        // base: __DEV__ ? '/' : '/monitor-web/',
         resolve: {
             //设置别名
             alias,
