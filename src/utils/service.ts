@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
 import { useAppStore } from '@/store'
+import router from '@/router'
 const service = axios.create({
     baseURL: import.meta.env.VITE_HTTP_PREFIX,
     timeout: 10000,
@@ -23,11 +24,15 @@ service.interceptors.request.use(
 service.interceptors.response.use(
     (res) => {
         const { status } = res.data
-        if (![200, 201].includes(status)) {
-            ElMessage.error(res.data?.error?.message ?? '请求失败')
-            return Promise.reject(new Error(res.data?.error?.message ?? '请求失败'))
+        if ([200, 201].includes(status)) {
+            return res.data
+        } else if (status === 401) {
+            router.push({ name: 'login' })
+            console.error('status', status, 'login')
+            return Promise.reject()
         }
-        return res.data
+        ElMessage.error(res.data?.error?.message ?? '请求失败')
+        return Promise.reject(new Error(res.data?.error?.message ?? '请求失败'))
     },
     (err) => {
         return Promise.reject(err)

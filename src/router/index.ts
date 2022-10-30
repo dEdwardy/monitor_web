@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 import MLayout from '@/components/MLayout.vue'
 import { useAppStore } from '@/store'
 import { ElMessage } from 'element-plus'
@@ -68,7 +68,7 @@ const routes: Array<RouteRecordRaw> = [
 ]
 
 const router = createRouter({
-    history: createWebHistory(import.meta.env.VITE_PUBLIC_PATH),
+    history: createWebHashHistory(import.meta.env.VITE_PUBLIC_PATH),
     routes,
 })
 router.beforeEach((to, from, next) => {
