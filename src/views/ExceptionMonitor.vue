@@ -12,14 +12,14 @@ interface IError {
     source?: string
     lineno?: number
     colno?: number
-    createdDate?: string
+    date?: Array<any>
     message?: string
     [propName: string]: any
 }
 interface ISearchForm {
     name?: string
     principal?: string
-    createdDate?: string
+    date?: Array<any>
 }
 const router = useRouter()
 // const handleChangeView = (value:showrType) => {
@@ -29,18 +29,21 @@ const router = useRouter()
 // }
 const searchForm = reactive<ISearchForm>({
     name: '',
-    createdDate: '',
+    date: [],
 })
 const { t } = useI18n()
 const getData = (params = {}) => {
-    return getErrors(params).then(({ data: { list, total } }) => ({
+    return getErrors({
+        ...params,
+        startDate: searchForm.date?.[0] ?? '',
+        endDate: searchForm.date?.[1] ?? '',
+    }).then(({ data: { list, total } }) => ({
         list,
         total,
     }))
 }
 const { search, list, total, loading, pageOptions } = useTable(getData)
-const getDetail = (row: any) => {
-    console.error(row)
+const getDetail = (row: IError) => {
     router.push({
         name: 'exceptionDetail',
         params: {
@@ -56,7 +59,7 @@ handleSearch()
         <div class="search-panel">
             <el-form inline>
                 <el-form-item label="创建时间">
-                    <el-date-picker v-model="searchForm.createdDate" type="date" placeholder="请选择创建时间" />
+                    <el-date-picker v-model="searchForm.date" value-format="YYYY-MM-DD" type="daterange" placeholder="请选择创建时间" />
                 </el-form-item>
                 <el-form-item label="项目">
                     <el-input v-model="searchForm.name"></el-input>
@@ -74,29 +77,6 @@ handleSearch()
                 <el-table-column prop="name" label="name" width="150" show-overflow-tooltip />
                 <el-table-column prop="filename" label="filename" show-overflow-tooltip />
                 <el-table-column prop="message" label="message" show-overflow-tooltip />
-                <!-- <el-table-column
-                    prop="lineno"
-                    label="lineno"
-                    show-overflow-tooltip
-                />
-                <el-table-column
-                    prop="colno"
-                    label="colno"
-                    show-overflow-tooltip
-                />
-                <el-table-column
-                    prop="remote"
-                    label="remote"
-                    show-overflow-tooltip
-                >
-                    <template #default="{ row }">
-                        <span>
-                            {{
-                                row.remote ? decodeURIComponent(row.remote) : ''
-                            }}
-                        </span>
-                    </template>
-                </el-table-column> -->
                 <el-table-column prop="ip" label="ip" show-overflow-tooltip />
                 <el-table-column prop="ua" label="ua" show-overflow-tooltip />
                 <el-table-column prop="created" width="180" label="创建日期" sortable>
