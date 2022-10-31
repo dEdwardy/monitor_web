@@ -63,6 +63,15 @@ const routes: Array<RouteRecordRaw> = [
                 },
                 component: () => import('@/views/ExceptionDetail.vue'),
             },
+            {
+                path: 'test',
+                name: 'test',
+                meta: {
+                    title: '测试页面',
+                    requireAuth: true,
+                },
+                component: () => import('@/views/TestView.vue'),
+            },
         ],
     },
 ]

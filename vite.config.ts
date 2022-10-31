@@ -34,10 +34,10 @@ export default defineConfig(({ mode }) => {
             },
             // 设置 https 代理
             proxy: {
-                '/api': {
+                '/nest-monitor-api': {
                     target: 'http://localhost:5003/api',
                     changeOrigin: true,
-                    rewrite: (path: string) => path.replace(/^\/api/, ''),
+                    rewrite: (path: string) => path.replace(/^\/nest-monitor-api/, ''),
                 },
             },
         },
