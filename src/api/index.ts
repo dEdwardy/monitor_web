@@ -33,3 +33,6 @@ export const getErrors = (params = {}) => {
 export const getErrorById = (id) => {
     return service.get(`/error/parse/${id}`)
 }
+export const getAnalysisData = (params = {}) => {
+    return service.get('/error/analysis', { params })
+}

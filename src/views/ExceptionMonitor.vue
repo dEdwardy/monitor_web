@@ -89,7 +89,7 @@ handleSearch()
                 <el-table-column prop="operation" label="操作" width="100">
                     <template #default="{ row }">
                         <div>
-                            <el-button type="text" @click="getDetail(row)"> detail </el-button>
+                            <el-button type="link" @click="getDetail(row)"> detail </el-button>
                         </div>
                     </template>
                 </el-table-column>

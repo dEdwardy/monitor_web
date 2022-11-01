@@ -181,8 +181,8 @@ handleSearch()
                 <el-table-column prop="operation" label="操作">
                     <template #default="{ row }">
                         <div>
-                            <el-button type="text" @click="showDetail(row.id)">详情</el-button>
-                            <el-button type="text" @click="handleRemove(row.id)">删除 </el-button>
+                            <el-button type="link" @click="showDetail(row.id)">详情</el-button>
+                            <el-button type="link" @click="handleRemove(row.id)">删除 </el-button>
                         </div>
                     </template>
                 </el-table-column>
