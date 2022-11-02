@@ -55,7 +55,11 @@ getExceptionDetailById()
                     {{ res.detail.po.column }}
                     <!-- <highlightjs language="javascript" :autodetect="false" :code="res.detail.detail"></highlightjs> -->
                     <pre>
-                      <code>{{res.detail.detail }}</code>
+                      <code>
+                        <div v-highlight="3">
+                        {{ res.detail.detail }}
+                        </div>
+                      </code>
                     </pre>
                 </div>
 

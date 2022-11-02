@@ -11,6 +11,7 @@ import 'element-plus/theme-chalk/el-message.css'
 import 'highlight.js/styles/atom-one-dark.css'
 import 'highlight.js/lib/common'
 import hljsVuePlugin from '@highlightjs/vue-plugin'
+import highlight from '@/directives/highlight'
 
 const app = createApp(App)
 const store = createPinia()
@@ -20,4 +21,5 @@ console.error(app.config.globalProperties)
 
 install(app)
 app.use(hljsVuePlugin)
+app.directive('highlight', highlight)
 app.use(router).use(store).use(i18n).mount('#app')
