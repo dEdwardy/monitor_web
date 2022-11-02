@@ -22,10 +22,12 @@ const getExceptionDetailById = () => {
     return getErrorById(params.id).then(({ data }) => {
         res.detail = {
             ...data,
-            detail: data.detail
-                .split('\n')
-                .map((i: string, idx: number) => `${idx + 1}. ${i}`)
-                .join('\n'),
+            // detail: data.detail
+            //     .split('\n')
+            //     .map((i: string, idx: number) => {
+            //         return idx + 1 === data?.po?.line ? `<span class="error-line">${i}</span>` : i
+            //     })
+            //     .join('\n'),
         }
     })
 }
@@ -51,11 +53,10 @@ getExceptionDetailById()
                 <div v-if="res.detail.po?.line">
                     Line {{ res.detail.po.line }} - Column
                     {{ res.detail.po.column }}
-                    <highlightjs
-                        language="JavaScript"
-                        :autodetect="false"
-                        :code="res.detail.detail"
-                    ></highlightjs>
+                    <!-- <highlightjs language="javascript" :autodetect="false" :code="res.detail.detail"></highlightjs> -->
+                    <pre>
+                      <code>{{res.detail.detail }}</code>
+                    </pre>
                 </div>
 
                 <span v-if="res.detail?.remote"> {{ res.detail?.remote }}</span>

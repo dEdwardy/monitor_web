@@ -36,7 +36,7 @@ watchEffect(() => {
                 <div class="info">
                     <div class="lang">
                         <el-popover placement="bottom" :width="80" trigger="hover">
-                            <el-button type="link" @click="handleChangeLang">
+                            <el-button type="primary" link @click="handleChangeLang">
                                 {{ locale === 'zh_CN' ? 'English' : '中文' }}
                             </el-button>
                             <template #reference>
@@ -47,7 +47,7 @@ watchEffect(() => {
                         </el-popover>
                     </div>
                     <el-popover placement="bottom" :width="80" trigger="hover">
-                        <el-button type="link" @click="handleLogout">
+                        <el-button type="primary" link @click="handleLogout">
                             {{ t('common.logout') }}
                         </el-button>
                         <template #reference>

@@ -181,14 +181,14 @@ handleSearch()
                 <el-table-column prop="operation" label="操作">
                     <template #default="{ row }">
                         <div>
-                            <el-button type="link" @click="showDetail(row.id)">详情</el-button>
-                            <el-button type="link" @click="handleRemove(row.id)">删除 </el-button>
+                            <el-button type="primary" link @click="showDetail(row.id)">详情</el-button>
+                            <el-button type="danger" link @click="handleRemove(row.id)">删除 </el-button>
                         </div>
                     </template>
                 </el-table-column>
             </el-table>
         </div>
-        <el-dialog v-model="dialogVisible" width="500px" @close="handleCancel">
+        <el-dialog v-model="dialogVisible" @close="handleCancel">
             <el-form ref="formRef" :model="form" :rules="rules" label-width="100px">
                 <el-form-item label="项目名称" prop="name">
                     <el-input v-model="form.name" :disabled="!!form.id" />
@@ -198,7 +198,7 @@ handleSearch()
                 </el-form-item>
                 <el-form-item label="SourceMap" prop="sourcemaps">
                     <el-upload
-                        class="upload-demo"
+                        style="width: 100%"
                         drag
                         :file-list="form.sourcemaps"
                         :http-request="handleUpload"

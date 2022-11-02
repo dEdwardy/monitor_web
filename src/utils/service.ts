@@ -26,9 +26,11 @@ service.interceptors.response.use(
         const { status } = res.data
         if ([200, 201].includes(status)) {
             return res.data
-        } else if (status === 401) {
+        } else if (status === 401 && res.config.url !== '/auth') {
+            const { logout } = useAppStore()
+            ElMessage.warning('当前身份已失效,请重新登录')
+            logout()
             router.push({ name: 'login' })
-            console.error('status', status, 'login')
             return Promise.reject()
         }
         ElMessage.error(res.data?.error?.message ?? '请求失败')
