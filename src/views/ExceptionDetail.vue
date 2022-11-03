@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useRoute } from 'vue-router'
 import { getErrorById } from '@/api'
-import { reactive } from 'vue'
+import { nextTick, reactive } from 'vue'
 const { params } = useRoute()
 const res = reactive({
     detail: {
@@ -22,10 +22,19 @@ const getExceptionDetailById = () => {
     return getErrorById(params.id).then(({ data }) => {
         res.detail = {
             ...data,
-            detail: data.detail
-                .split('\n')
-                .map((i: string, idx: number) => `${idx + 1}. ${i}`)
-                .join('\n'),
+            // detail: data.detail
+            //     .split('\n')
+            //     .map((i: string, idx: number) => {
+            //         return idx + 1 === data?.po?.line ? `<span class="error-line">${i}</span>` : i
+            //     })
+            //     .join('\n'),
+        }
+        if (data?.po?.line) {
+            let str = data.detail.split('\n')[data?.po?.line - 1]
+            nextTick(() => {
+                let code = document.querySelector('code')
+                console.error('code', code, str)
+            })
         }
     })
 }
@@ -51,11 +60,7 @@ getExceptionDetailById()
                 <div v-if="res.detail.po?.line">
                     Line {{ res.detail.po.line }} - Column
                     {{ res.detail.po.column }}
-                    <highlightjs
-                        language="JavaScript"
-                        :autodetect="false"
-                        :code="res.detail.detail"
-                    ></highlightjs>
+                    <preview-code :code="res.detail.detail" type="js"> </preview-code>
                 </div>
 
                 <span v-if="res.detail?.remote"> {{ res.detail?.remote }}</span>

@@ -5,8 +5,11 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import { createSvg } from './src/icons/index'
+import prismjs from 'vite-plugin-prismjs'
+import fs from 'fs'
+import { join } from 'path'
 
-import styleImport from 'vite-plugin-style-import'
+// import styleImport from 'vite-plugin-style-import'
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
@@ -27,41 +30,64 @@ export default defineConfig(({ mode }) => {
             alias,
         },
         server: {
-            port: 8111, //启动端口
-            hmr: {
-                host: 'localhost',
-                port: 8111,
-            },
+            // https: {
+            //     cert: fs.readFileSync(join(__dirname, 'keys/cert.crt')),
+            //     key: fs.readFileSync(join(__dirname, 'keys/cert.key')),
+            // },
+            port: 80, //启动端口
+            // hmr: {
+            //     host: 'localhost',
+            //     port: 443,
+            // },
             // 设置 https 代理
             proxy: {
-                '/api': {
+                '/nest-monitor-api': {
                     target: 'http://localhost:5003/api',
                     changeOrigin: true,
-                    rewrite: (path: string) => path.replace(/^\/api/, ''),
+                    rewrite: (path: string) => path.replace(/^\/nest-monitor-api/, ''),
                 },
             },
         },
         plugins: [
             vue(),
+            prismjs({
+                // languages: ['json', 'js'],
+                languages: 'all',
+                plugins: [
+                    'line-numbers',
+                    'line-highlight',
+                    'show-language',
+                    'toolbar',
+                    'match-braces',
+                    'highlight-keywords',
+                    'previewers',
+                    'filter-highlight-all',
+                ], //配置显示行号插件
+                theme: 'twilight', //主题名称
+                css: true,
+            }),
             AutoImport({
                 resolvers: [ElementPlusResolver()],
             }),
             Components({
                 resolvers: [ElementPlusResolver()],
             }),
-            styleImport({
-                libs: [
-                    {
-                        libraryName: 'element-plus',
-                        esModule: true,
-                        resolveStyle: (name) => {
-                            return `element-plus/lib/theme-chalk/${name}.css`
-                        },
-                        ensureStyleFile: true, // 忽略文件是否存在, 导入不存在的CSS文件时防止错误。
-                    },
-                ],
-            }),
+            // styleImport({
+            //     libs: [
+            //         {
+            //             libraryName: 'element-plus',
+            //             esModule: true,
+            //             resolveStyle: (name) => {
+            //                 return `element-plus/lib/theme-chalk/${name}.css`
+            //             },
+            //             ensureStyleFile: true, // 忽略文件是否存在, 导入不存在的CSS文件时防止错误。
+            //         },
+            //     ],
+            // }),
             createSvg('./src/icons/svg/'),
         ],
+        optimizeDeps: {
+            include: ['vue', 'vue-router', 'pinia', 'pinia-plugin-persistedstate', '@element-plus/icons-vue', 'axios'],
+        },
     }
 })

@@ -53,26 +53,15 @@ const handleLogin = () => {
     <div class="login">
         <div class="login-form">
             <div class="title">Monitor</div>
-            <el-form
-                ref="formRef"
-                :model="form"
-                :rules="rules"
-                label-width="60px"
-                hide-required-asterisk
-            >
+            <el-form ref="formRef" :model="form" :rules="rules" label-width="60px" hide-required-asterisk>
                 <el-form-item label="用户名" prop="username">
                     <el-input v-model="form.username" />
                 </el-form-item>
                 <el-form-item label="密码" prop="password">
-                    <el-input v-model="form.password" />
+                    <el-input v-model="form.password" type="password" />
                 </el-form-item>
                 <div class="operation">
-                    <el-button
-                        type="primary"
-                        :loading="loading"
-                        @click="handleLogin"
-                        >Login</el-button
-                    >
+                    <el-button type="primary" :loading="loading" @click="handleLogin">Login</el-button>
                 </div>
             </el-form>
         </div>

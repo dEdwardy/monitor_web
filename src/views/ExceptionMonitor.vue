@@ -7,6 +7,7 @@ import { getErrors } from '@/api'
 import { format, parseISO } from 'date-fns'
 import { useRouter } from 'vue-router'
 import { useTable } from '@/hooks/useTable'
+import TestView from './TestView.vue'
 
 interface IError {
     _id?: string | number
@@ -64,7 +65,7 @@ handleSearch()
     <div class="error-monitor">
         <div class="switch-tab">
             <el-switch
-                :value="current"
+                :model-value="current"
                 :active-value="showType.CHART"
                 :inactive-value="showType.LIST"
                 :active-icon="PieChart"
@@ -106,7 +107,7 @@ handleSearch()
                     <el-table-column prop="operation" label="操作" width="100">
                         <template #default="{ row }">
                             <div>
-                                <el-button type="text" @click="getDetail(row)"> detail </el-button>
+                                <el-button type="primary" link @click="getDetail(row)"> detail </el-button>
                             </div>
                         </template>
                     </el-table-column>
@@ -123,7 +124,9 @@ handleSearch()
                 />
             </div>
         </div>
-        <div v-show="current === showType.CHART" class="chart-view">echarts</div>
+        <div v-show="current === showType.CHART" class="chart-view">
+            <TestView />
+        </div>
     </div>
 </template>
 

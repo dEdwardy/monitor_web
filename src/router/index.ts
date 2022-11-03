@@ -16,7 +16,7 @@ const routes: Array<RouteRecordRaw> = [
     {
         path: '/',
         component: MLayout,
-        redirect: 'index',
+        redirect: 'login',
         children: [
             {
                 path: 'index',
@@ -63,6 +63,15 @@ const routes: Array<RouteRecordRaw> = [
                 },
                 component: () => import('@/views/ExceptionDetail.vue'),
             },
+            {
+                path: 'test',
+                name: 'test',
+                meta: {
+                    title: '测试页面',
+                    requireAuth: true,
+                },
+                component: () => import('@/views/TestView.vue'),
+            },
         ],
     },
 ]
@@ -76,11 +85,10 @@ router.beforeEach((to, from, next) => {
         next()
     } else {
         const { uinfo } = useAppStore()
-        console.error('uinfo', uinfo)
         // 如果没登录,都导向登录页
         if (!uinfo) {
             if (to.path !== '/login') {
-                ElMessage.warning('请登录后再操作')
+                ElMessage.warning('当前身份已失效,请重新登录')
                 next({ path: '/login' })
                 // next()
             } else {

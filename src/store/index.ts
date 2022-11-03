@@ -21,6 +21,9 @@ export const useAppStore = defineStore('app', {
                 ElMessage.success('登录成功')
             })
         },
+        logout() {
+            this.uinfo = null
+        },
     },
     persist: true,
 })

@@ -121,10 +121,14 @@ const showDetail = (id: string) => {
     })
 }
 const handleUpload = (res: any) => {
-    console.error('appId', form.id)
     const formData = new FormData()
     formData.append('file', res.file)
-    return uploadSourceMap(formData, form.id)
+    return uploadSourceMap(formData, form.id).then(({ data }) => {
+        form.sourcemaps.push(data)
+    })
+}
+const handleRemoveSourceMap = (uploadFile: any) => {
+    form.sourcemaps = form.sourcemaps.filter((i: any) => i.id !== uploadFile.id)
 }
 const handleRemove = (id: string) => {
     console.error('id', id)
@@ -177,23 +181,30 @@ handleSearch()
                 <el-table-column prop="operation" label="操作">
                     <template #default="{ row }">
                         <div>
-                            <el-button type="text" @click="showDetail(row.id)">详情</el-button>
-                            <el-button type="text" @click="handleRemove(row.id)">删除 </el-button>
+                            <el-button type="primary" link @click="showDetail(row.id)">详情</el-button>
+                            <el-button type="danger" link @click="handleRemove(row.id)">删除 </el-button>
                         </div>
                     </template>
                 </el-table-column>
             </el-table>
         </div>
-        <el-dialog v-model="dialogVisible" width="500px" @close="handleCancel">
+        <el-dialog v-model="dialogVisible" @close="handleCancel">
             <el-form ref="formRef" :model="form" :rules="rules" label-width="100px">
                 <el-form-item label="项目名称" prop="name">
-                    <el-input v-model="form.name" :disabled="form.id" />
+                    <el-input v-model="form.name" :disabled="!!form.id" />
                 </el-form-item>
                 <el-form-item label="负责人邮件" prop="email">
-                    <el-input v-model="form.email" :disabled="form.id" />
+                    <el-input v-model="form.email" :disabled="!!form.id" />
                 </el-form-item>
                 <el-form-item label="SourceMap" prop="sourcemaps">
-                    <el-upload class="upload-demo" drag :file-list="form.sourcemaps" :http-request="handleUpload" multiple>
+                    <el-upload
+                        style="width: 100%"
+                        drag
+                        :file-list="form.sourcemaps"
+                        :http-request="handleUpload"
+                        :on-remove="handleRemoveSourceMap"
+                        multiple
+                    >
                         <el-icon :size="100">
                             <SvgIcon icon-class="upload"></SvgIcon>
                         </el-icon>
