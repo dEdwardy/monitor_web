@@ -74,6 +74,10 @@ const props = defineProps({
         type: Boolean,
         default: false,
     },
+    autoresize: {
+        type: Boolean,
+        default: false,
+    },
 })
 const emits = defineEmits(['handleClick'])
 const option = computed(() => {
@@ -101,5 +105,5 @@ const handleClick = (e) => {
 </script>
 
 <template>
-    <v-chart :loading="props.loading" :option="option" :loading-options="loadingOps" @click="handleClick" />
+    <v-chart :loading="props.loading" :option="option" :loading-options="loadingOps" :autoresize="props.autoresize" @click="handleClick" />
 </template>

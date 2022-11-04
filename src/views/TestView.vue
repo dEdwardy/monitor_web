@@ -52,6 +52,7 @@ getChartData()
             :loading="pieData.loading"
             :data="pieData.data"
             style="min-width: 400px; height: 400px; flex: 1"
+            autoresize
             @handle-click="handleDetail"
         />
         <PieChart
@@ -59,6 +60,7 @@ getChartData()
             name="t2"
             :loading="pieData2.loading"
             :data="pieData2.data"
+            autoresize
             style="min-width: 400px; height: 400px; flex: 1"
         />
     </div>
