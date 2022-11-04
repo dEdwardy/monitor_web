@@ -67,18 +67,35 @@ export function useTable(
     })
     // 默认后端分页
     if (config.backendPagination) {
+        // watch(
+        //     () => pageOptions.size,
+        //     () => {
+        //         pageOptions.current = 1
+        //         search()
+        //     },
+        // )
+        // watch(
+        //     () => pageOptions.current,
+        //     () => {
+        //         search()
+        //     },
+        // )
         watch(
-            () => pageOptions.size,
-            () => {
-                pageOptions.current = 1
+            [() => pageOptions.current, () => pageOptions.size],
+            ([, s1], [, s2], onCleanup) => {
+                let stop = false
+                onCleanup(() => {
+                    if (s1 !== s2) {
+                        stop = true
+                    }
+                })
+                if (s1 !== s2) {
+                    pageOptions.current = 1
+                }
+                if (stop) return
                 search()
             },
-        )
-        watch(
-            () => pageOptions.current,
-            () => {
-                search()
-            },
+            { flush: 'sync' },
         )
     } else {
         watch(
