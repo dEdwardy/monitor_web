@@ -34,12 +34,12 @@ export interface IConfig {
 export function useTable(
     getList,
     options: ISearchOptions = {},
-    config: IConfig = { backendPagination: true, current: 1, size: 5 },
+    config: IConfig = { backendPagination: true, current: 1, size: 10 },
 ): IResponse {
     const searchOptions = options ? reactive(options) : reactive({})
     const pageOptions = reactive({
         current: config?.current ?? 1,
-        size: config?.size ?? 5,
+        size: config?.size ?? 10,
         ...toRefs(searchOptions),
     })
     const loading = ref(false)

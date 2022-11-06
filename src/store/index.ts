@@ -9,9 +9,15 @@ export const useAppStore = defineStore('app', {
             // menu: [],
             // permission: {},
             locale: 'zh_CN',
+            settings: {
+                errorShowType: 'chart',
+            },
         }
     },
     actions: {
+        setErrorShowType() {
+            this.settings.errorShowType = this.settings.errorShowType === 'list' ? 'chart' : 'list'
+        },
         setLocale(locale) {
             this.locale = locale
         },

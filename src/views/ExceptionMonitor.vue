@@ -8,6 +8,8 @@ import { format, parseISO } from 'date-fns'
 import { useRouter } from 'vue-router'
 import { useTable } from '@/hooks/useTable'
 import TestView from './TestView.vue'
+import { useAppStore } from '@/store'
+import { computed } from '@vue/reactivity'
 
 interface IError {
     _id?: string | number
@@ -28,11 +30,15 @@ enum showType {
     LIST = 'list',
     CHART = 'chart',
 }
-const current = ref<string>(showType.CHART)
+// const current = ref<string>(showType.CHART)
+const current = computed(() => useAppStore().settings.errorShowType)
 const router = useRouter()
-const handleChangeView = (value: showType) => {
-    console.error(value)
-    current.value = value === showType.LIST ? showType.LIST : showType.CHART
+// const handleChangeView = (value: showType) => {
+//     console.error(value)
+//     current.value = value === showType.LIST ? showType.LIST : showType.CHART
+// }
+const handleChangeView = () => {
+    useAppStore().setErrorShowType()
 }
 const searchForm = reactive<ISearchForm>({
     name: '',
