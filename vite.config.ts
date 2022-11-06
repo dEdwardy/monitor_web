@@ -53,17 +53,9 @@ export default defineConfig(({ mode }) => {
             prismjs({
                 // languages: ['json', 'js'],
                 languages: 'all',
-                plugins: [
-                    'line-numbers',
-                    'line-highlight',
-                    'show-language',
-                    'toolbar',
-                    'match-braces',
-                    'highlight-keywords',
-                    'previewers',
-                    'filter-highlight-all',
-                ], //配置显示行号插件
+                plugins: ['line-highlight', 'line-numbers'], //配置显示行号插件
                 theme: 'twilight', //主题名称
+                // theme: 'okaidia',
                 css: true,
             }),
             AutoImport({

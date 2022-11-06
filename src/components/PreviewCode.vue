@@ -1,7 +1,7 @@
 <template>
-    <pre :class="'hx-scroll ' + lineNumbers">
-  <code :class="'language-' + type" v-html="Prism.highlight(code, Prism.languages[type], type)"></code>
-  </pre>
+    <pre :class="'hx-scroll ' + lineNumbers" :data-line="props.line">
+      <code style="margin-left:-3em" :class="'language-' + type" v-html="Prism.highlight(code, Prism.languages[type], type)"></code>
+    </pre>
 </template>
 ​
 <script setup lang="ts">
@@ -18,7 +18,10 @@ const props = defineProps({
     },
     isShowlineNumbers: {
         type: Boolean,
-        default: false,
+        default: true,
+    },
+    line: {
+        type: String,
     },
 })
 const lineNumbers = computed(() => {

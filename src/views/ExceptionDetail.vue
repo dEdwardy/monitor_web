@@ -60,7 +60,7 @@ getExceptionDetailById()
                 <div v-if="res.detail.po?.line">
                     Line {{ res.detail.po.line }} - Column
                     {{ res.detail.po.column }}
-                    <preview-code :code="res.detail.detail" type="js"> </preview-code>
+                    <preview-code :code="res.detail.detail" type="js" :line="res.detail.po.line"> </preview-code>
                 </div>
 
                 <span v-if="res.detail?.remote"> {{ res.detail?.remote }}</span>

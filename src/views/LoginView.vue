@@ -55,10 +55,10 @@ const handleLogin = () => {
             <div class="title">Monitor</div>
             <el-form ref="formRef" :model="form" :rules="rules" label-width="60px" hide-required-asterisk>
                 <el-form-item label="用户名" prop="username">
-                    <el-input v-model="form.username" />
+                    <el-input v-model="form.username" autocomplete="false" />
                 </el-form-item>
                 <el-form-item label="密码" prop="password">
-                    <el-input v-model="form.password" type="password" />
+                    <el-input v-model="form.password" autocomplete="new-password" type="password" />
                 </el-form-item>
                 <div class="operation">
                     <el-button type="primary" :loading="loading" @click="handleLogin">Login</el-button>

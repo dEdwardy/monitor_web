@@ -47,6 +47,7 @@ export function useTable(
     const list = ref([])
     const error = ref()
     const search = () => {
+        console.error('search')
         loading.value = true
         return getList(pageOptions)
             .then((res) => {
@@ -92,7 +93,12 @@ export function useTable(
                 if (s1 !== s2) {
                     pageOptions.current = 1
                 }
-                if (stop) return
+                if (stop) {
+                    console.error('xxxxxxxx')
+                    return
+                } else {
+                    console.error('yyyyyyyyyyyyy')
+                }
                 search()
             },
             { flush: 'sync' },

@@ -120,10 +120,10 @@ handleSearch()
         <el-dialog v-model="dialogVisible" width="500px">
             <el-form ref="formRef" :model="form" :rules="rules" label-width="100px">
                 <el-form-item label="用户名" prop="username">
-                    <el-input v-model="form.username"></el-input>
+                    <el-input v-model="form.username" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="密码" prop="password">
-                    <el-input v-model="form.password" type="password"></el-input>
+                    <el-input v-model="form.password" type="password" autocomplete="new-password"></el-input>
                 </el-form-item>
                 <el-form-item label="邮箱" prop="email">
                     <el-input v-model="form.email"></el-input>

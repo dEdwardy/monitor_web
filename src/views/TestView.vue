@@ -47,22 +47,26 @@ getChartData()
 
 <template>
     <div class="charts">
-        <PieChart
-            name="t1"
-            :loading="pieData.loading"
-            :data="pieData.data"
-            style="min-width: 400px; height: 400px; flex: 1"
-            autoresize
-            @handle-click="handleDetail"
-        />
-        <PieChart
-            v-if="pieData2.data.length > 0"
-            name="t2"
-            :loading="pieData2.loading"
-            :data="pieData2.data"
-            autoresize
-            style="min-width: 400px; height: 400px; flex: 1"
-        />
+        <div class="item">
+            <PieChart
+                name="t1"
+                :loading="pieData.loading"
+                :data="pieData.data"
+                style="min-width: 400px; height: 400px; flex: 1"
+                autoresize
+                @handle-click="handleDetail"
+            />
+        </div>
+        <div class="item">
+            <PieChart
+                v-if="pieData2.data.length > 0"
+                name="t2"
+                :loading="pieData2.loading"
+                :data="pieData2.data"
+                autoresize
+                style="min-width: 400px; height: 400px; flex: 1"
+            />
+        </div>
     </div>
 </template>
 
@@ -70,5 +74,11 @@ getChartData()
 .charts {
     display: flex;
     align-items: center;
+    .item {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 }
 </style>
