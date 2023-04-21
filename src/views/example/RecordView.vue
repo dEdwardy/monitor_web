@@ -1,0 +1,3 @@
+<temoplate>
+  RecordView
+</temoplate>

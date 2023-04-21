@@ -28,6 +28,8 @@
     "pinia": "^2.0.13",
     "pinia-plugin-persistedstate": "^1.5.1",
     "prismjs": "^1.29.0",
+    "rrweb": "^2.0.0-alpha.4",
+    "rrweb-player": "^1.0.0-alpha.4",
     "vue": "^3.2.25",
     "vue-echarts": "^6.0.2",
     "vue-i18n": "^9.1.9",
